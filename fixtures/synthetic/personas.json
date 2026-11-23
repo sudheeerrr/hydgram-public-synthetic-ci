@@ -1,0 +1,11 @@
+{
+  "description": "Invented, non-personal CI personas; not application accounts",
+  "personas": [
+    {"id":"synthetic-owner-a","role":"owner"},
+    {"id":"synthetic-buyer-b","role":"buyer"}
+  ],
+  "events": [
+    {"id":"synthetic-event-1","actor":"synthetic-owner-a","kind":"listing-created"},
+    {"id":"synthetic-event-2","actor":"synthetic-buyer-b","kind":"inquiry-created"}
+  ]
+}
