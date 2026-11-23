@@ -1,36 +1,28 @@
-# Publication approval gates — HYDGRAM synthetic CI only
+# Publication authorization and remaining verification gates
 
-Status: MIT LICENSE APPROVED FOR SYNTHETIC CI ONLY / PUBLICATION NOT APPROVED / NO ACTIONS EXECUTION.
+**Status (2026-11-23): SEPARATE PUBLIC SYNTHETIC CI PUBLISHED. WORKFLOW NOT EXECUTED.**
 
-## Licensing decision (owner-approved 2026-11-23)
+The owner selected the MIT license for this synthetic package and explicitly requested public GitHub Actions deployment, then created the separate `sudheeerrr/hydgram-public-synthetic-ci` repository. This authorizes public publication and manual synthetic CI execution **only for this separate repository**. No private HYDGRAM repository visibility or Actions policy changes are authorized.
 
-- Owner explicitly approved the **MIT License for this separate synthetic CI package only** in chat on 2026-11-23. The reviewed root `LICENSE` now contains the MIT text with the project-contributor copyright notice. The owner must confirm authority to license all included original contributions before actual publication; this verification is not inferred from the chat approval.
-- This license **does not cover** private HYDGRAM application source, history, private documentation, customer data or credentials. No private source is bundled in this synthetic package.
-- Licensing approval is **not authorization** to publish, create a public GitHub repository, reverse the private repository's Actions prohibition, or trigger any workflow.
-- Dependencies: package.json has **zero npm dependencies**. External checkout/setup-node Actions and MariaDB container remain governed by their upstream licenses, not this MIT grant; actual image/runtime validation remains pending.
+## Published scope
 
-## Hard authorization gates (each independent)
+- Standalone synthetic browser and MariaDB infrastructure checks, dependency-free Node test fixtures, one manually triggered GitHub Actions workflow, MIT license, allowlist and support documents.
+- No copied private HYDGRAM application files, private Git history, database backups, secrets, real authentication sessions, customer information or release artifacts.
+- No production or staging access, deployment, privileged token scopes, paid-runner authorization, or application release authorization.
 
-1. OWNER_COPYRIGHT: MIT was explicitly selected for synthetic CI files on 2026-11-23; verify ownership/permission for all contributed content and confirm the copyright notice before public distribution. No rights to private HYDGRAM source are granted.
-2. EXACT_BYTES: Record SHA-256 of the final ZIP, inspect all file names and content, validate synthetic-only provenance, run `npm run check:publication` and `npm test`; approve **that** hash. Any byte change requires renewed review.
-3. POLICY_REVERSAL: Owner separately reverses, in writing, the binding `project_docs/GITHUB_NO_ACTIONS_POLICY.md` prohibition for **a separately named public synthetic CI repository only**, explicitly preserving private HYDGRAM no-Actions prohibition unless independently changed. Do not edit existing private policy without authorization.
-4. CREATE_REPOSITORY: Owner independently approves creating an empty *new* public repository with no Git history or private source. Do not repurpose, temporarily publish, mirror or copy the private HYDGRAM repository.
-5. ENABLE_AND_DISPATCH: Owner separately approves enabling and manually running the reviewed workflow after reviewing immutable action pins, OCI digest, token permissions, untrusted-input handling, runner account and timeout/quotas. Publication approval is not permission to execute workflows.
-6. RUNTIME_ACCEPTANCE: Actually observe `npm test`, publication guard, MariaDB 11 synthetic database and sandboxed Chromium DOM checks on the authorized nonroot runner. Do not claim these passed from static validation or from local failures.
-7. RELEASE_SEPARATION: Public synthetic CI results cannot certify the actual private Next.js build, authenticated buyer-owner database, mobile devices, PWA or HYDGRAM release approval. Never publish test reports containing private customer or production data.
+## Security requirements
 
-## Explicit no-go triggers
+- Always run `npm run check:publication` and `npm test` after edits.
+- Actions remain `workflow_dispatch` only with `contents: read`; official actions pinned to full commit SHAs.
+- MariaDB OCI digest pinned, database bound to loopback; all data synthetic; do not weaken Chrome sandbox.
+- Review actual GitHub run logs and the image digest pull before calling the workflow successful.
+- Confirm ownership and rights for future contributions. Do not copy files from the private HYDGRAM application without independent security review and approval.
 
-- Missing any of gates 1-5; ZIP hash changed after review; secrets or private files found; unexpected GitHub workflow trigger or write permissions; unreviewed upstream image/action; missing disposable-only DB guard; public CI given a token capable of reading private HYDGRAM.
-- Failed real-browser or MariaDB acceptance means *runtime readiness remains unverified*, not that private source can be copied to overcome it.
+## What is still unverified
 
-## Owner approval statement (not executed)
+- GitHub-hosted Actions dispatch and result.
+- MariaDB 11 service image pull, actual SQL tests and rollback.
+- Chromium headless rendered-page smoke on a nonroot hosted runner.
+- All actual private HYDGRAM V1 release gates, including production Next.js build on the accepted code revision, buyer/owner auth, private MariaDB transactions, PWA and Android/iOS device acceptance.
 
-When ready, the owner should explicitly identify the separate public repository name, the reviewed package ZIP SHA-256, the already selected MIT license, confirm rights to license, and the exact actions separately approved: public repository creation, push of the synthetic-only package and manual workflow dispatch. Until then, DO NOT CREATE, PUBLISH, ENABLE or RUN.
-
-## Sources consulted
-
-- GitHub Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository
-- GitHub Terms of Service: https://docs.github.com/en/site-policy/github-terms/github-terms-of-service
-- GitHub Actions limits: https://docs.github.com/en/actions/reference/limits
-- Private HYDGRAM: `project_docs/GITHUB_NO_ACTIONS_POLICY.md` and `AGENTS.md` (read-only inspected; not copied into this public package)
+**Private HYDGRAM remains private and retains its project-specific no-GitHub-Actions policy.** Public synthetic infrastructure checks do not replace full private application acceptance.
