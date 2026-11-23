@@ -1,0 +1,13 @@
+{
+  "name": "hydgram-public-ci-synthetic",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=22 <25"},
+  "scripts": {
+    "test": "node --test ci/*.test.mjs",
+    "check:publication": "node ci/publication-guard.mjs",
+    "check:browser": "node ci/browser-smoke.mjs",
+    "check:database": "node ci/database-smoke.mjs"
+  }
+}
