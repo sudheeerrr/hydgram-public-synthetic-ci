@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.p8
+*.jks
+*.keystore
+*.db
+*.sqlite*
+*.zip
+*.tgz
+*.tar*
+*.log
+.DS_Store
