@@ -1,0 +1,61 @@
+name: Synthetic Public CI (manual approval required)
+
+# No automatic trigger. Do not publish/activate without owner approval.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: synthetic-public-ci
+  cancel-in-progress: true
+
+jobs:
+  synthetic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      mariadb:
+        image: docker.io/library/mariadb:11.4.13-noble@sha256:5e73baf8179b29f115101bb102763a47a017361f3e9792daccba6646c3ab1532 # official multiarch OCI index, reviewed snapshot
+        env:
+          MARIADB_ROOT_PASSWORD: synthetic-root-unused-password
+          MARIADB_DATABASE: synthetic_ci
+          MARIADB_USER: synthetic_ci
+          MARIADB_PASSWORD: synthetic-ci-only-password
+        ports:
+          - "127.0.0.1:33306:3306"
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      CHROMIUM_BIN: google-chrome
+      CI_DB_HOST: 127.0.0.1
+      CI_DB_PORT: '33306'
+      CI_DB_NAME: synthetic_ci
+      CI_DB_USER: synthetic_ci
+      CI_DB_PASSWORD: synthetic-ci-only-password
+    steps:
+      - name: Checkout public-only files
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Setup Node.js 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+      - name: Verify publish allowlist before all tests
+        run: npm run check:publication
+      - name: Run dependency-free Node tests
+        run: npm test
+      - name: Install disposable test clients
+        run: sudo apt-get update -qq && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq mariadb-client
+      - name: Verify disposable MariaDB 11 behavior
+        run: npm run check:database
+      - name: Verify runner Chrome availability
+        run: command -v google-chrome && google-chrome --version
+      - name: Verify synthetic Chrome browser
+        run: npm run check:browser
